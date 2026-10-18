@@ -15,7 +15,7 @@ The package postinstall generates Prisma Client. The Vercel deployment must use 
 
 ## Environment variables
 
-Add production values in Vercel Project Settings → Environment Variables. Never upload `.env` or commit secret values. Use the variable names in `.env.example`; the app uses PostgreSQL, Clerk, UploadThing, Stripe, LiveKit, and Firebase where those features are enabled. At minimum configure `DATABASE_URL`, Clerk keys, the production `NEXT_PUBLIC_APP_URL`, and exact `CORS_ORIGINS`. Configure the optional Stripe, UploadThing, LiveKit, and Firebase variables before enabling those features. Use `PG_POOL_MAX=1` with a pooled Neon connection string for serverless deployments to limit database connections.
+Add production values in Vercel Project Settings → Environment Variables. Never upload `.env` or commit secret values. Use the variable names in `.env.example`; the app uses PostgreSQL, Clerk, UploadThing, Stripe, LiveKit, and Firebase where those features are enabled. Import `.env.vercel` for the existing test setup or add the same values in Project Settings. Enable Vercel system environment variables; the app derives its deployed URL from Vercel when `NEXT_PUBLIC_APP_URL` is unset. Add the exact origin to `CORS_ORIGINS` only if a separate website origin must call this server. Configure optional Stripe, UploadThing, LiveKit, and Firebase values before enabling those features. Use `PG_POOL_MAX=1` with a pooled Neon connection string for serverless deployments.
 
 ## Start the Vercel setup
 

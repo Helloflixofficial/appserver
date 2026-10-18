@@ -690,6 +690,12 @@ function applyCors(req, res) {
     .map(value => value.trim())
     .filter(Boolean);
   let isAllowed = configuredOrigins.includes(origin);
+  const vercelHosts = [
+    process.env.VERCEL_URL,
+    process.env.VERCEL_BRANCH_URL,
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+  ].filter(Boolean);
+  if (!isAllowed && vercelHosts.some(host => origin === `https://${host}`)) isAllowed = true;
   if (!isProduction && !isAllowed) {
     try {
       const parsedOrigin = new URL(origin);

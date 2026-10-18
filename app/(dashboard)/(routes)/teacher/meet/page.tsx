@@ -156,7 +156,10 @@ const SessionCard = ({
 }) => {
   // Use the current HTTPS origin when the dashboard is opened securely. This
   // keeps shared LAN invites on HTTPS, which browsers require for media APIs.
-  const configuredAppUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const vercelHost = process.env.VERCEL_ENV === "production"
+    ? process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL
+    : process.env.VERCEL_BRANCH_URL || process.env.VERCEL_URL;
+  const configuredAppUrl = process.env.NEXT_PUBLIC_APP_URL || (vercelHost ? `https://${vercelHost}` : "http://localhost:3000");
   const [appUrl, setAppUrl] = useState(configuredAppUrl);
 
   useEffect(() => {

@@ -84,7 +84,10 @@ export async function POST(
       // Body is optional
     }
 
-    const appBaseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const vercelHost = process.env.VERCEL_ENV === "production"
+      ? process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL
+      : process.env.VERCEL_BRANCH_URL || process.env.VERCEL_URL;
+    const appBaseUrl = process.env.NEXT_PUBLIC_APP_URL || (vercelHost ? `https://${vercelHost}` : "http://localhost:3000");
 
     const session = await stripe.checkout.sessions.create({
       customer: stripeCustomer.stripeCustomerId,
