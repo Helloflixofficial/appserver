@@ -1,0 +1,20 @@
+# Never upload local credentials or machine-specific generated files.
+.env*
+.vercel/
+node_modules/
+.next/
+.next-dev/
+.git/
+.git_disabled/
+.idea/
+*.log
+*.tsbuildinfo
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+google-services.json
+*firebase-adminsdk*.json
+*service-account*.json
+public/videos/*.mp4
