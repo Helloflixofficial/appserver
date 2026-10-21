@@ -46,7 +46,14 @@ export async function POST(req: Request) {
     const title = typeof body.title === "string" ? body.title.trim() : "";
     const content = typeof body.content === "string" ? body.content.trim() : "";
     const spaceId = typeof body.spaceId === "string" ? body.spaceId : "";
+    const mediaUrl = typeof body.mediaUrl === "string" ? body.mediaUrl.trim() : "";
+    const mediaType = body.mediaType === "gif" ? "gif" : body.mediaType === "image" ? "image" : null;
+    const linkUrl = typeof body.linkUrl === "string" ? body.linkUrl.trim() : "";
+    const linkTitle = typeof body.linkTitle === "string" ? body.linkTitle.trim().slice(0, 120) : "";
     const isAnnouncement = isAdmin && body.isAnnouncement === true;
+
+    if (mediaUrl && !/^https?:\/\//i.test(mediaUrl)) return NextResponse.json({ error: "Media URL must start with http:// or https://" }, { status: 400 });
+    if (linkUrl && !/^https?:\/\//i.test(linkUrl)) return NextResponse.json({ error: "Link URL must start with http:// or https://" }, { status: 400 });
 
     if (!title || title.length > 120) return NextResponse.json({ error: "Add a post title up to 120 characters" }, { status: 400 });
     if (!content || content.length > 10000) return NextResponse.json({ error: "Add post content up to 10,000 characters" }, { status: 400 });
@@ -55,7 +62,7 @@ export async function POST(req: Request) {
     if (!space) return NextResponse.json({ error: "Choose a valid community space" }, { status: 400 });
 
     const post = await db.communityPost.create({
-      data: { title, content, spaceId: space.id, ownerId, authorId: userId, isAnnouncement, isApproved: isAdmin || !settings.requirePostApproval },
+      data: { title, content, mediaUrl: mediaUrl || null, mediaType, linkUrl: linkUrl || null, linkTitle: linkTitle || null, spaceId: space.id, ownerId, authorId: userId, isAnnouncement, isApproved: isAdmin || !settings.requirePostApproval },
       include: { space: { select: { id: true, name: true, color: true } }, comments: true },
     });
     if (isAdmin && post.isApproved) {
