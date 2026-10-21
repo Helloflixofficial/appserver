@@ -32,3 +32,7 @@ See [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) for deployment details and li
 - `.env*` files, service-account JSON, signing keys, and deployment credentials are excluded from Git and Vercel uploads.
 - `.env.example` contains variable names and placeholders only; verify placeholders are replaced in the hosting environment.
 - Rotate any credential that has ever been committed or shared publicly.
+
+## CoinGecko Listing data
+
+The mobile app calls the read-only /api/crypto/* proxy routes. Set COINGECKO_DEMO_API_KEY in Vercel Project Settings → Environment Variables (Production, and Preview if you use preview deployments). Keep it server-only: do not prefix it with NEXT_PUBLIC_, place it in Flutter compile-time settings, or commit a value. Redeploy after adding or changing it. Market responses are cached for 60 seconds to reduce API calls.
